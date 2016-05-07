@@ -1,0 +1,551 @@
+{
+  "cartograpi.Api.getmethodinfo": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.getmethodinfo",
+    "docstring": "",
+    "qualname": "Api.getmethodinfo",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "method",
+      "cls=None"
+    ],
+    "name": "getmethodinfo",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi.Api.methods": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.methods",
+    "docstring": "Return the methods defined in class *cls*. By default, all\nmethods (regular, static, class, local, inherited) are returned.\nOptional keyword arguments are used to define a filter (see\nApi.make_filter()).",
+    "qualname": "Api.methods",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "cls",
+      "islocal=None",
+      "isclassmethod=None",
+      "isstaticmethod=None",
+      "**kwargs"
+    ],
+    "name": "methods",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi.Api.qualname": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.qualname",
+    "docstring": "Return the qualified name of *obj*.\n\nUnlike __qualname__ in Python 3.3+, this function returns '' for\nmodules. This is so the following always returns the fullname:\n\n>>> (Api.modulename(obj) + '.' + Api.qualname(obj)).rstrip('.')",
+    "qualname": "Api.qualname",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "obj"
+    ],
+    "name": "qualname",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi.Api.isspecial": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.isspecial",
+    "docstring": "Return `True` if *obj*'s name begins and ends with `__`.",
+    "qualname": "Api.isspecial",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "obj"
+    ],
+    "name": "isspecial",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi.Api.modulename": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.modulename",
+    "docstring": "Return the module name of *obj*.",
+    "qualname": "Api.modulename",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "obj"
+    ],
+    "name": "modulename",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi.Api.staticmethods": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.staticmethods",
+    "docstring": "Return the static methods defined in *obj*.\nOptional keyword arguments are used to define a filter (see\nApi.make_filter()).",
+    "qualname": "Api.staticmethods",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "obj",
+      "**kwargs"
+    ],
+    "name": "staticmethods",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi.Api.make_filter": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.make_filter",
+    "docstring": "Make a function for filtering results from `members()`.\nBelow, *x* is the object to be filtered.\n\nArgs:\n    context: if not None, test that the value of\n             `context(x)` is equal to *context*\n    exclude: if not None, test that *x* is in *exclude*;\n             *exclude* must be a collection\n    isprivate: if not None, test that the value of\n               `isprivate(x)` is equal to *isprivate*\n    isspecial: if not None, test that the value of\n               `isspecial(x)` is equal to *isspecial*\nReturns:\n    A function that returns `True` if all conditions are\n    satisfied, or `False` if any condition fails.",
+    "qualname": "Api.make_filter",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "context=None",
+      "exclude=None",
+      "isprivate=False",
+      "isspecial=False"
+    ],
+    "name": "make_filter",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi.Api.getfunctioninfo": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.getfunctioninfo",
+    "docstring": "",
+    "qualname": "Api.getfunctioninfo",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "func",
+      "module=None"
+    ],
+    "name": "getfunctioninfo",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi.Api.context": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.context",
+    "docstring": "Return the containing context of *obj* (e.g. a module's package,\na class's module, etc.).",
+    "qualname": "Api.context",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "obj"
+    ],
+    "name": "context",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi.Api.getbasicinfo": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.getbasicinfo",
+    "docstring": "",
+    "qualname": "Api.getbasicinfo",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "obj"
+    ],
+    "name": "getbasicinfo",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi.sourceline_sort": {
+    "type": "function",
+    "module": "cartograpi",
+    "name": "sourceline_sort",
+    "fullname": "cartograpi.sourceline_sort",
+    "docstring": "",
+    "qualname": "sourceline_sort",
+    "signature": [
+      "obj"
+    ]
+  },
+  "cartograpi.Api.packages": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.packages",
+    "docstring": "Return the non-module packages in *obj*.\nOptional keyword arguments are used to define a filter (see\nApi.make_filter()).",
+    "qualname": "Api.packages",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "obj",
+      "**kwargs"
+    ],
+    "name": "packages",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi.Api.getclassinfo": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.getclassinfo",
+    "docstring": "",
+    "qualname": "Api.getclassinfo",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "cls"
+    ],
+    "name": "getclassinfo",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi.Api": {
+    "type": "class",
+    "module": "cartograpi",
+    "classtype": "class",
+    "name": "Api",
+    "fullname": "cartograpi.Api",
+    "docstring": "",
+    "qualname": "Api",
+    "methods": [
+      "cartograpi.Api.build_index",
+      "cartograpi.Api.name_cache",
+      "cartograpi.Api.isspecial",
+      "cartograpi.Api.isprivate",
+      "cartograpi.Api.context",
+      "cartograpi.Api.ispackage",
+      "cartograpi.Api.ismodule",
+      "cartograpi.Api.isclass",
+      "cartograpi.Api.isroutine",
+      "cartograpi.Api.ismethod",
+      "cartograpi.Api.isfunction",
+      "cartograpi.Api.iscallable",
+      "cartograpi.Api.getinfo",
+      "cartograpi.Api.getbasicinfo",
+      "cartograpi.Api.getmoduleinfo",
+      "cartograpi.Api.getclassinfo",
+      "cartograpi.Api.getmethodinfo",
+      "cartograpi.Api.getfunctioninfo",
+      "cartograpi.Api.members",
+      "cartograpi.Api.make_filter",
+      "cartograpi.Api.packages",
+      "cartograpi.Api.modules",
+      "cartograpi.Api.classes",
+      "cartograpi.Api.methods",
+      "cartograpi.Api.staticmethods",
+      "cartograpi.Api.classmethods",
+      "cartograpi.Api.regularmethods",
+      "cartograpi.Api.functions",
+      "cartograpi.Api.name",
+      "cartograpi.Api.modulename",
+      "cartograpi.Api.qualname",
+      "cartograpi.Api.docstring",
+      "cartograpi.Api.signature"
+    ],
+    "signature": []
+  },
+  "cartograpi.Api.regularmethods": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.regularmethods",
+    "docstring": "Return the regular (non-static, non-class) methods defined in\n*obj*.\nOptional keyword arguments are used to define a filter (see\nApi.make_filter()).",
+    "qualname": "Api.regularmethods",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "obj",
+      "**kwargs"
+    ],
+    "name": "regularmethods",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi.Api.modules": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.modules",
+    "docstring": "Return the modules in the package *obj*. This returns both\nregular modules and packages by default. If *ispackage* is\n`False`, only regular modules are returned, and similarly only\npackages are returned if *ispackage* is `True`.\nOptional keyword arguments are used to define a filter (see\nApi.make_filter()).",
+    "qualname": "Api.modules",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "obj",
+      "ispackage=None",
+      "prefix=''",
+      "**kwargs"
+    ],
+    "name": "modules",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi.main": {
+    "type": "function",
+    "module": "cartograpi",
+    "name": "main",
+    "fullname": "cartograpi.main",
+    "docstring": "",
+    "qualname": "main",
+    "signature": [
+      "args"
+    ]
+  },
+  "cartograpi.Api.docstring": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.docstring",
+    "docstring": "Return the docstring of *obj*.",
+    "qualname": "Api.docstring",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "obj",
+      "ignorecommon=True"
+    ],
+    "name": "docstring",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi.Api.iscallable": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.iscallable",
+    "docstring": "Return `True` if the object is callable.",
+    "qualname": "Api.iscallable",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "obj"
+    ],
+    "name": "iscallable",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi.Api.name_cache": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.name_cache",
+    "docstring": "",
+    "qualname": "Api.name_cache",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "obj"
+    ],
+    "name": "name_cache",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi.Api.build_index": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.build_index",
+    "docstring": "",
+    "qualname": "Api.build_index",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "mod",
+      "exclude=None"
+    ],
+    "name": "build_index",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi.Api.getinfo": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.getinfo",
+    "docstring": "",
+    "qualname": "Api.getinfo",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "obj",
+      "prefix=''",
+      "**kwargs"
+    ],
+    "name": "getinfo",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi": {
+    "type": "module",
+    "module": "cartograpi",
+    "functions": [
+      "cartograpi.clearlist",
+      "cartograpi.sourceline_sort",
+      "cartograpi.main"
+    ],
+    "name": "cartograpi",
+    "fullname": "cartograpi",
+    "classes": [
+      "cartograpi.Api"
+    ],
+    "docstring": "Easy inspection of Python APIs\n\nCartogrAPI wraps Python's standard introspection functions in an\neasy-to-use programmatic interface, plus adds a few extra features\nenabled by default (but can be disabled):\n\n * definitions are sorted by source-order, when possible\n * only \"public\" definitions are iterated, where public means:\n   - identifiers don't start with `_`\n   - defined locally (not just imported)\n * differences between Python 2 and 3 are smoothed over:\n   - function signatures\n   - unbound methods\n   - qualnames\n\nA useful feature of CartogrAPI is the `Api.build_index()` function,\nwhich generates a dictionary description of the API. This can be\ndumped to JSON from the commandline:\n\n    $ cartograpi.py module > module-api.json\n\nThis uses the module name (which must be importable), not the filename.\nFor instance, CartogrAPI's API description can be generated as follows:\n\n    $ cartograpi.py cartograpi\n    {\n      \"cartograpi.Api.iscallable\": {\n        \"docstring\": \"Return `True` if the object is callable.\",\n        \"module\": \"cartograpi\",\n        \"name\": \"iscallable\",\n        \"qualname\": \"Api.iscallable\",\n        \"signature\": [\n          \"obj\"\n        ],\n        \"methodtype\": \"staticmethod\",\n        \"fullname\": \"cartograpi.Api.iscallable\",\n        \"type\": \"method\",\n        \"islocal\": true\n      },\n      ...\n    }\n\nNote that, being a dictionary, the generated index may not appear in\nsource order, but sub-definitions (e.g. the value of the \"methods\" key\non a class description) will be.",
+    "qualname": "",
+    "ispackage": false
+  },
+  "cartograpi.Api.isfunction": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.isfunction",
+    "docstring": "Return `True` if the object is a function.",
+    "qualname": "Api.isfunction",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "obj"
+    ],
+    "name": "isfunction",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi.Api.functions": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.functions",
+    "docstring": "Return the functions defined in *obj*.\nOptional keyword arguments are used to define a filter (see\nApi.make_filter()).",
+    "qualname": "Api.functions",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "obj",
+      "**kwargs"
+    ],
+    "name": "functions",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi.Api.isclass": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.isclass",
+    "docstring": "Return `True` if the object is a class.",
+    "qualname": "Api.isclass",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "obj"
+    ],
+    "name": "isclass",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi.Api.ispackage": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.ispackage",
+    "docstring": "Return `True` if the object is a package.",
+    "qualname": "Api.ispackage",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "obj"
+    ],
+    "name": "ispackage",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi.Api.classes": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.classes",
+    "docstring": "Return the classes defined in *obj*.\nOptional keyword arguments are used to define a filter (see\nApi.make_filter()).",
+    "qualname": "Api.classes",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "obj",
+      "**kwargs"
+    ],
+    "name": "classes",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi.Api.ismethod": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.ismethod",
+    "docstring": "Return `True` if the object is a method.",
+    "qualname": "Api.ismethod",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "obj"
+    ],
+    "name": "ismethod",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi.Api.classmethods": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.classmethods",
+    "docstring": "Return the class methods defined in *obj*.\nOptional keyword arguments are used to define a filter (see\nApi.make_filter()).",
+    "qualname": "Api.classmethods",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "obj",
+      "**kwargs"
+    ],
+    "name": "classmethods",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi.Api.members": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.members",
+    "docstring": "Return all member objects in *obj* that match *predicate* and\nare not filtered by *filter*. This is a wrapper for Python's\n`inspect.getmembers()` with the addition of the filter function.",
+    "qualname": "Api.members",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "obj",
+      "predicate=None",
+      "filter=None"
+    ],
+    "name": "members",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi.Api.ismodule": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.ismodule",
+    "docstring": "Return `True` if the object is a module.",
+    "qualname": "Api.ismodule",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "obj"
+    ],
+    "name": "ismodule",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi.Api.isroutine": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.isroutine",
+    "docstring": "Return `True` if the object is a routine.",
+    "qualname": "Api.isroutine",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "obj"
+    ],
+    "name": "isroutine",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi.Api.signature": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.signature",
+    "docstring": "Return the Signature object for callable *obj*.",
+    "qualname": "Api.signature",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "obj"
+    ],
+    "name": "signature",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi.Api.getmoduleinfo": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.getmoduleinfo",
+    "docstring": "",
+    "qualname": "Api.getmoduleinfo",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "mod",
+      "pkg=None"
+    ],
+    "name": "getmoduleinfo",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi.Api.name": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.name",
+    "docstring": "Return the name of *obj*.",
+    "qualname": "Api.name",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "obj"
+    ],
+    "name": "name",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi.Api.isprivate": {
+    "islocal": true,
+    "fullname": "cartograpi.Api.isprivate",
+    "docstring": "Return `True` if *obj*'s name begins with `_` but doesn't match\nisspecial(*obj*).",
+    "qualname": "Api.isprivate",
+    "type": "method",
+    "module": "cartograpi",
+    "signature": [
+      "obj"
+    ],
+    "name": "isprivate",
+    "methodtype": "staticmethod"
+  },
+  "cartograpi.clearlist": {
+    "type": "function",
+    "module": "cartograpi",
+    "name": "clearlist",
+    "fullname": "cartograpi.clearlist",
+    "docstring": "",
+    "qualname": "clearlist",
+    "signature": [
+      "lst"
+    ]
+  }
+}
