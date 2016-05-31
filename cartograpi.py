@@ -71,20 +71,29 @@ from inspect import (
     isroutine,
     ismethod,
     isfunction,
+    cleandoc,
 )
 try:
     from inspect import signature as _signature
     def _paramlist(obj):
         try:
             sig = _signature(obj)
-            return [str(param) for param in sig.parameters.values()]
+            params = []
+            for p in sig.parameters.values():
+                if p.default is not p.empty:
+                    params.append('{}={}'.format(
+                        p.name,
+                        getattr(p.default, '__name__', repr(p.default))
+                    ))
+                else:
+                    params.append(p.name)
+            return params
         except (ValueError, TypeError):
             return ['?']
 except ImportError:
     from inspect import getargspec
     def _paramlist(obj):
         try:
-            print(obj, isfunction(obj))
             if not isfunction(obj) and hasattr(obj, '__func__'):
                 obj = obj.__func__
             elif isclass(obj):
@@ -92,7 +101,8 @@ except ImportError:
             a, vargs, kwargs, d = getargspec(obj)
             if d:
                 params = a[:-len(d)]
-                params.extend('%s=%r' % a_d for a_d in zip(a[-len(d):], d))
+                params.extend('%s=%s' % (a, getattr(d, '__name__', repr(d)))
+                              for a, d in zip(a[-len(d):], d))
             else:
                 params = a
             if vargs:
@@ -106,6 +116,7 @@ except ImportError:
 
 import pkgutil
 import importlib
+import re
 import warnings
 
 # Python2 doesn't have list.clear()
@@ -186,7 +197,6 @@ class Api(object):
                 qualname = prefix + name
                 prefix = qualname + '.'
                 fullname = '%s.%s' % (module, qualname)
-            print(_obj, name, module, qualname, fullname, prefix)
             cache[id(_obj)] = {
                 'module': module,
                 'qualname': qualname,
@@ -605,25 +615,283 @@ class Api(object):
             return ['?']
 
 
+###################
+# DOCSTRING PARSING
+
+
+def _Docstring_rejoin(lines):
+    return cleandoc('\n'.join(lines))
+
+def _Docstring_block(lines, pattern):
+    block = []
+    while lines and re.search(pattern, lines[-1]):
+        block.append(lines.pop())
+    return block
+
+def _Docstring_remaining_lines(lines, indent):
+    while lines and lines[-1].strip() == '':
+        lines.pop()
+    if lines and lines[-1].startswith(' ' * indent):
+        return True
+    return False
+
+_GoogleDocstring_section_re = re.compile(
+    r'(?P<indent> *)'
+    r'(?P<name>'
+    r'(?:keyword +)?arg(?:ument)?s?'
+    r'|attributes?'
+    r'|examples?'
+    r'|methods?'
+    r'|notes?'
+    r'|(?:other +)?param(?:eter)?s?'
+    r'|returns?'
+    r'|raises?'
+    r'|references?'
+    r'|see +also'
+    r'|todos?'
+    r'|warn(?:ing)?s?'
+    r'|yields?'
+    r')'
+    r' *:\s*$',  # line-ending colon
+    re.U|re.I
+)
+
+_GoogleDocstring_item_re = re.compile(
+    # items have a name and a colon at least
+    r'(?P<indent> {2,})'  # two or more spaces (from indent level)
+    r'(?P<name>\w+)\s*'
+    r'(?:\((?P<meta>[^)]+)\))?\s*'
+    r':'
+    r'(?P<desc>.*)$',
+    re.U
+)
+
+_GoogleDocstring_code_re = re.compile(
+    r'(?P<indent> *)'
+    '('
+    r'(?P<python>>>> )'
+    '|'
+    r'(?P<fenced>```)\s*(?P<fenced_language>\w+)\s*$'
+    ')',
+    re.U
+)
+
+
+def GoogleDocstring(s):
+    """
+    Parse the Google-style docstring and return the analyzed sections.
+    Sections (taken from Napoleon):
+        Args (alias of Parameters)
+        Arguments (alias of Parameters)
+        Attributes
+        Example
+        Examples
+        Keyword Args (alias of Keyword Arguments)
+        Keyword Arguments
+        Methods
+        Note
+        Notes
+        Other Parameters
+        Parameters
+        Return (alias of Returns)
+        Returns
+        Raises
+        References
+        See Also
+        Todo
+        Warning
+        Warnings (alias of Warning)
+        Warns
+        Yield (alias of Yields)
+        Yields
+
+    Returns:
+        A list of sections, where each section is a dictionary with
+        the following information:
+
+        * `name` - section title
+        * `contents` - items within a section
+
+        Each item in `contents` is then a dictionary with the following
+        information:
+
+        * `name` - item (e.g. argument) name (possibly None)
+        * `metadata` - metadata (e.g. type info) that may follow `name`
+          (possibly None)
+        * `text` - the textual content of the item, processed with
+          Python's `inspect.cleandoc()`
+    """
+    lines = s.splitlines()
+    lines = list(reversed(lines))  # for stack order
+    return list(_GoogleDocstring_sections(lines))
+
+def _GoogleDocstring_sections(lines):
+    while lines:
+        match = _GoogleDocstring_section_re.match(lines[-1])
+        if match:
+            yield _GoogleDocstring_named_section(lines, match)
+        else:
+            contents = _GoogleDocstring_contents(
+                lines, _GoogleDocstring_section_re, 0
+            )
+            yield {'contents': list(contents)}
+    assert len(lines) == 0
+
+def _GoogleDocstring_named_section(lines, match):
+    lines.pop()  # no more use for starting line
+    name = match.group('name').strip()
+    indent = len(match.group('indent'))
+    items = []
+    while _Docstring_remaining_lines(lines, indent + 1):
+        match = _GoogleDocstring_item_re.match(lines[-1])
+        if match:
+            items.append(_GoogleDocstring_item(lines, match))
+        else:
+            items.extend(
+                _GoogleDocstring_contents(
+                    lines, _GoogleDocstring_item_re, indent + 1
+                )
+            )
+    return {'name': name, 'contents': items}
+
+def _GoogleDocstring_item(lines, match):
+    lines.pop()  # no more use for starting line
+    item = {'name': match.group('name')}
+    if match.group('meta'):
+        item['meta'] = match.group('meta')
+    indent = len(match.group('indent'))
+    desc = match.group('desc')
+    desc = [desc] if desc else []
+    while _Docstring_remaining_lines(lines, indent + 1):
+        desc.append(lines.pop())
+
+    item['text'] = _Docstring_rejoin(desc)
+    return item
+
+
+def _GoogleDocstring_contents(lines, matcher, indent):
+    while _Docstring_remaining_lines(lines, indent) and \
+            not matcher.match(lines[-1]):
+        item = {}
+        match = _GoogleDocstring_code_re.match(lines[-1])
+        if match:
+            ind = ' ' * len(match.group('indent'))
+            content_type = 'code'
+            if match.group('python'):
+                item['language'] = 'python'
+                block = _Docstring_block(lines, r'^%s[^ ]' % (ind,))
+            elif match.group('fenced'):
+                lines.pop()  # remove fenced opening
+                if match.group('fenced_language'):
+                    item['language'] = match.group('fenced_language')
+                block = _Docstring_block(lines, r'^(%s(?!```)| *$)' % (ind,))
+                if lines[-1].strip() == '```':
+                    lines.pop()  # remove fenced closing
+        elif lines[-1].startswith(' ' * (indent + 4)):
+            ind = len(re.search(r'^\s*', lines[-1]).group(0))
+            content_type = 'code'
+            block = _Docstring_block(lines, r'^( {%d,}| *$)' % (ind,))
+        else:
+            content_type = 'text'
+            block = _Docstring_block(
+                lines, r'^ {%d,}[^ ]' % (indent,)
+            )
+        item[content_type] = _Docstring_rejoin(block)
+        yield item
+
+
+docstring_parsers = {
+    'google': GoogleDocstring,
+}
+
 #####################
 # COMMAND LINE ACCESS
 
 
-def main(args):
-    import json
+def index(args):
+    if args.format == 'json':
+        import json
+        dump = json.dumps
+    elif args.format == 'yaml':
+        import yaml
+        dump = yaml.dump
+    else:
+        raise ValueError(args.format)
+
     mod = importlib.import_module(args.module)
-    idx = Api.build_index(mod)
-    # remove object references
+
+    exclude = None
+    if args.exclude:
+        exclude = list(map(str.strip, args.exclude.split(',')))
+
+    idx = Api.build_index(mod, exclude=exclude)
+
+    # postprocessing
+
     for fullname in idx:
         if 'obj' in idx[fullname]:
-            del idx[fullname]['obj']
-    print(json.dumps(idx, indent=2))
+            del idx[fullname]['obj']  # remove object references for json
 
-if __name__ == '__main__':
+    docstring_parse = docstring_parsers.get(args.docstring_parse)
+    if docstring_parse:
+        for fullname, obj in idx.items():
+            if 'docstring' in obj:
+                obj['doc'] = docstring_parse(obj['docstring'])
+
+    print(dump(idx, indent=2))
+
+def diff(args):
+    import json
+    idx1 = json.load(open(args.index1))
+    idx2 = json.load(open(args.index2))
+    allnames = set(list(idx1) + list(idx2))
+    for name in sorted(allnames):
+        if name in idx1 and name not in idx2:
+            print('-\t' + name)
+        elif name not in idx1 and name in idx2:
+            print('+\t' + name)
+        else:
+            sig1 = idx1.get(name).get('signature')
+            sig2 = idx2.get(name).get('signature')
+            if sig1 != sig2:
+                print('~\t' + name)
+                print(' .. 1: {}({})'.format(name, ', '.join(sig1)))
+                print(' .. 2: {}({})'.format(name, ', '.join(sig2)))
+
+def main():
     import argparse
     parser = argparse.ArgumentParser(
         description='Inspect the API for a Python module or package'
     )
-    parser.add_argument('module', help='the module or package to inspect')
+    cmds = parser.add_subparsers()
+
+    idx = cmds.add_parser('index')
+    idx.add_argument('module', help='the module or package to inspect')
+    idx.add_argument(
+        '-x', '--exclude',
+        help='comma-separated list of members to exclude (these are '
+             'full names, so module + qualname)'
+    )
+    idx.add_argument(
+        '-d', '--docstring-parse',
+        metavar='STYLE', choices=('none', 'google'), default='none',
+        help='parse docstrings in the given STYLE'
+    )
+    idx.add_argument(
+        '-f', '--format',
+        choices=('json', 'yaml'), default='json',
+        help='the output file format'
+    )
+    idx.set_defaults(func=index)
+
+    dif = cmds.add_parser('diff')
+    dif.add_argument('index1')
+    dif.add_argument('index2')
+    dif.set_defaults(func=diff)
+
     args = parser.parse_args()
-    main(args)
+    args.func(args)
+
+
+if __name__ == '__main__':
+    main()
